@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='scientific-string',
-    version='0.0.1',
+    version='0.0.2',
     packages=['scientific-string'],
     url='https://github.com/singularitti/scientific-string',
     license='MIT',
