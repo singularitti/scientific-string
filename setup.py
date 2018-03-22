@@ -1,4 +1,12 @@
+import sys
+
 from setuptools import setup
+
+PY3 = sys.version_info
+
+if PY3 < (3, 5):
+    raise EnvironmentError(
+        'Please use CPython interpreter higher than version 3.5!')
 
 setup(
     name='scientific-string',
