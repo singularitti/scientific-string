@@ -2,8 +2,8 @@ from setuptools import setup
 
 setup(
     name='scientific-string',
-    version='0.0.2',
-    packages=['scientific-string'],
+    version='0.0.3',
+    packages=['scientific_string'],
     url='https://github.com/singularitti/scientific-string',
     license='MIT',
     author='Qi Zhang',
