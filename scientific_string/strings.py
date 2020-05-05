@@ -63,7 +63,7 @@ def strings_to_floats(strings: Iterable[str]) -> Iterable[float]:
         >>> strings_to_floats(['1', '1.0', '-0.2'])
         [1.0, 1.0, -0.2]
     """
-    return strings_to_(strings, float)
+    return strings_to_(strings, string_to_general_float)
 
 
 def string_to_double_precision(s: str) -> float:
