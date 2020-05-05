@@ -6,7 +6,7 @@ from typing import Any, Callable, Iterable, List, Optional
 
 # ========================================= What can be exported? =========================================
 __all__ = ['strings_to_', 'strings_to_integers', 'strings_to_floats', 'string_to_float', 'match_one_string',
-           'match_one_pattern', 'all_string_like']
+           'match_one_pattern', 'all_strings']
 
 
 def strings_to_(strings: Iterable[str], f: Callable) -> Iterable[Any]:
@@ -22,7 +22,7 @@ def strings_to_(strings: Iterable[str], f: Callable) -> Iterable[Any]:
         >>> strings_to_(['0.333', '0.667', '0.250'], float)
         [0.333, 0.667, 0.25]
     """
-    if not all_string_like(strings):
+    if not all_strings(strings):
         raise TypeError('All have to be strings!')
     # ``type(strs)`` is the container of *strs*.
     return type(strings)(map(f, strings))
@@ -172,7 +172,7 @@ def match_one_pattern(pattern: str, s: str, *args: Callable, **flags):
         return None
 
 
-def all_string_like(iterable: Iterable[object]) -> bool:
+def all_strings(iterable: Iterable[object]) -> bool:
     """
     If any element of an iterable is not a string, return `True`.
 
@@ -181,9 +181,9 @@ def all_string_like(iterable: Iterable[object]) -> bool:
 
     .. doctest::
 
-        >>> all_string_like(['a', 'b', 'c', 3])
+        >>> all_strings(['a', 'b', 'c', 3])
         False
-        >>> all_string_like(('a', 'b', 'c', 'd'))
+        >>> all_strings(('a', 'b', 'c', 'd'))
         True
     """
     return all(isinstance(_, str) for _ in iterable)
