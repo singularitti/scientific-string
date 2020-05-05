@@ -46,9 +46,12 @@ def strings_to_integers(strings: Iterable[str]) -> Iterable[int]:
     .. doctest::
 
         >>> strings_to_integers(['1', '1.0', '-0.2'])
+        [1, 1, ValueError('-0.2 cannot be converted to an integer')]
+        >>> strings_to_integers(['1', '1.0', '-0.'])
         [1, 1, 0]
     """
-    return strings_to_(strings, lambda x: int(float(x)))
+    return strings_to_(strings, lambda x: int(float(x)) if float(x).is_integer() else ValueError(
+        "{} cannot be converted to an integer".format(x)))
 
 
 def strings_to_floats(strings: Iterable[str]) -> Iterable[float]:
