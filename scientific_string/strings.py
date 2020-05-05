@@ -78,16 +78,14 @@ def string_to_double_precision(s: str) -> float:
 
         >>> string_to_double_precision('1d-82')
         1e-82
-        >>> string_to_double_precision('1.0D-82')
-        1e-82
-        >>> string_to_double_precision('0.8D234')
+        >>> string_to_double_precision('-1.0D-82')
+        -1e-82
+        >>> string_to_double_precision('+0.8D234')
         8e+233
         >>> string_to_double_precision('.8d234')
         8e+233
     """
-    first, second, exponential = re.match(
-        r"(-?\d*)\.?(-?\d*)d(-?\d+)", s, re.IGNORECASE).groups()
-    return float(first + '.' + second + 'e' + exponential)
+    return float(re.sub('d', 'e', s, flags=re.IGNORECASE))
 
 
 def string_to_general_float(s: str) -> float:
@@ -99,7 +97,7 @@ def string_to_general_float(s: str) -> float:
 
     .. doctest::
 
-        >>> string_to_general_float('1.0D-5')
+        >>> string_to_general_float('+1.0D-5')
         1e-05
         >>> string_to_general_float('1Dx')
         Traceback (most recent call last):
