@@ -13,8 +13,8 @@ import re
 from typing import Any, Callable, Iterable, List, Optional
 
 # ========================================= What can be exported? =========================================
-__all__ = ['strings_to_', 'strings_to_integers', 'strings_to_floats', 'string_to_double_precision',
-           'string_to_general_float', 'match_one_string', 'match_one_pattern', 'all_string_like']
+__all__ = ['strings_to_', 'strings_to_integers', 'strings_to_floats', 'string_to_float', 'match_one_string',
+           'match_one_pattern', 'all_string_like']
 
 
 def strings_to_(strings: Iterable[str], f: Callable) -> Iterable[Any]:
@@ -63,10 +63,10 @@ def strings_to_floats(strings: Iterable[str]) -> Iterable[float]:
         >>> strings_to_floats(['1', '1.0', '-0.2'])
         [1.0, 1.0, -0.2]
     """
-    return strings_to_(strings, string_to_general_float)
+    return strings_to_(strings, string_to_float)
 
 
-def string_to_double_precision(s: str) -> float:
+def string_to_float(s: str) -> float:
     """
     Double precision float in Fortran file will have form 'x.ydz' or 'x.yDz', this cannot be convert directly to float
     by Python ``float`` function, so I wrote this function to help conversion. For example,
@@ -76,46 +76,24 @@ def string_to_double_precision(s: str) -> float:
 
     .. doctest::
 
-        >>> string_to_double_precision('1d-82')
+        >>> string_to_float('1d-82')
         1e-82
-        >>> string_to_double_precision('-1.0D-82')
+        >>> string_to_float('-1.0D-82')
         -1e-82
-        >>> string_to_double_precision('+0.8D234')
+        >>> string_to_float('+0.8D234')
         8e+233
-        >>> string_to_double_precision('.8d234')
+        >>> string_to_float('.8d234')
         8e+233
-    """
-    return float(re.sub('d', 'e', s, flags=re.IGNORECASE))
-
-
-def string_to_general_float(s: str) -> float:
-    """
-    Convert a string to corresponding single or double precision scientific number.
-
-    :param s: a string could be '0.1', '1e-5', '1.0D-5', or any other validated number
-    :return: a float or raise an error
-
-    .. doctest::
-
-        >>> string_to_general_float('+1.0D-5')
+        >>> string_to_float('+1.0D-5')
         1e-05
-        >>> string_to_general_float('1Dx')
-        Traceback (most recent call last):
-            ...
-        ValueError: The string '1Dx' does not corresponds to a double precision number!
-        >>> string_to_general_float('.8d234')
+        >>> string_to_float('-0.00001')
+        -1e-05
+        >>> string_to_float('.8e234')
         8e+233
-        >>> string_to_general_float('0.1')
+        >>> string_to_float('.1')
         0.1
     """
-    if 'D' in s.upper():  # Possible double precision number
-        try:
-            return string_to_double_precision(s)
-        except ValueError:
-            raise ValueError(
-                "The string '{0}' does not corresponds to a double precision number!".format(s))
-    else:
-        return float(s)
+    return float(re.sub('d', 'e', s, flags=re.IGNORECASE))
 
 
 def match_one_string(pattern: str, s: str, *args):
