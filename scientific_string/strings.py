@@ -158,7 +158,7 @@ def match_one_string(pattern: str, s: str, *args):
             pattern, s))
 
 
-def match_one_pattern(pattern: str, s: str, *args: Optional[Callable], **flags):
+def match_one_pattern(pattern: str, s: str, *args: Callable, **flags):
     """
     Find a pattern in a certain string. If found and a wrapper is given, then return the wrapped matched-string; if no
     wrapper is given, return the pure matched string. If no match is found, return None.
