@@ -10,10 +10,10 @@
 """
 
 import re
-from typing import *
+from typing import Any, Callable, Iterable, List, Optional
 
 # ========================================= What can be exported? =========================================
-__all__ = ['strings_to_', 'strings_to_integers', 'strings_to_floats', 'string_to_double_precision_float',
+__all__ = ['strings_to_', 'strings_to_integers', 'strings_to_floats', 'string_to_double_precision',
            'string_to_general_float', 'match_one_string', 'match_one_pattern', 'all_string_like']
 
 
@@ -66,7 +66,7 @@ def strings_to_floats(strings: Iterable[str]) -> Iterable[float]:
     return strings_to_(strings, float)
 
 
-def string_to_double_precision_float(s: str) -> float:
+def string_to_double_precision(s: str) -> float:
     """
     Double precision float in Fortran file will have form 'x.ydz' or 'x.yDz', this cannot be convert directly to float
     by Python ``float`` function, so I wrote this function to help conversion. For example,
@@ -76,17 +76,17 @@ def string_to_double_precision_float(s: str) -> float:
 
     .. doctest::
 
-        >>> string_to_double_precision_float('1d-82')
+        >>> string_to_double_precision('1d-82')
         1e-82
-        >>> string_to_double_precision_float('1.0D-82')
+        >>> string_to_double_precision('1.0D-82')
         1e-82
-        >>> string_to_double_precision_float('0.8D234')
+        >>> string_to_double_precision('0.8D234')
         8e+233
-        >>> string_to_double_precision_float('.8d234')
+        >>> string_to_double_precision('.8d234')
         8e+233
     """
     first, second, exponential = re.match(
-        "(-?\d*)\.?(-?\d*)d(-?\d+)", s, re.IGNORECASE).groups()
+        r"(-?\d*)\.?(-?\d*)d(-?\d+)", s, re.IGNORECASE).groups()
     return float(first + '.' + second + 'e' + exponential)
 
 
@@ -112,7 +112,7 @@ def string_to_general_float(s: str) -> float:
     """
     if 'D' in s.upper():  # Possible double precision number
         try:
-            return string_to_double_precision_float(s)
+            return string_to_double_precision(s)
         except ValueError:
             raise ValueError(
                 "The string '{0}' does not corresponds to a double precision number!".format(s))
