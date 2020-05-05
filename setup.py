@@ -10,7 +10,7 @@ if PY3 < (3, 5):
 
 setup(
     name='scientific-string',
-    version='0.0.3',
+    version='0.1.0',
     packages=['scientific_string'],
     url='https://github.com/singularitti/scientific-string',
     license='MIT',
