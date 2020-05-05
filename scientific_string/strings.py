@@ -14,7 +14,7 @@ from typing import *
 
 # ========================================= What can be exported? =========================================
 __all__ = ['strings_to_', 'strings_to_integers', 'strings_to_floats', 'string_to_double_precision_float',
-           'string_to_general_float', 'match_one_string', 'match_one_pattern', 'is_string_like', 'all_string_like']
+           'string_to_general_float', 'match_one_string', 'match_one_pattern', 'all_string_like']
 
 
 def strings_to_(strings: Iterable[str], f: Callable) -> Iterable[Any]:
@@ -201,23 +201,6 @@ def match_one_pattern(pattern: str, s: str, *args: Optional[Callable], **flags):
         return None
 
 
-def is_string_like(obj: object) -> bool:
-    """
-    Check if the object is a string.
-
-    :param obj: The object to check.
-    :return: Whether *obj* is a string or not.
-
-    .. doctest::
-
-        >>> is_string_like('foo')
-        True
-        >>> is_string_like(1)
-        False
-    """
-    return isinstance(obj, str)
-
-
 def all_string_like(iterable: Iterable[object]) -> bool:
     """
     If any element of an iterable is not a string, return `True`.
@@ -232,4 +215,4 @@ def all_string_like(iterable: Iterable[object]) -> bool:
         >>> all_string_like(('a', 'b', 'c', 'd'))
         True
     """
-    return all(is_string_like(_) for _ in iterable)
+    return all(isinstance(_, str) for _ in iterable)
